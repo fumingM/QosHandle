@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<something-else-entirely>
+	<proxool>
+		<alias>xml-test</alias>
+		<driver-url>
+			jdbc:oracle:thin:@192.168.13.77:1521:gtmsdb
+		</driver-url>
+		<driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+		<driver-properties>
+			<property name="user" value="gtmsmanager" />
+			<property name="password" value="Mypassword12#" />
+		</driver-properties>
+		<maximum-connection-count>150</maximum-connection-count>
+		<house-keeping-test-sql>select 1</house-keeping-test-sql>
+		<simultaneous-build-throttle>20</simultaneous-build-throttle>
+	</proxool>
+</something-else-entirely>

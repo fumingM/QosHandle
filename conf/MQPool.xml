@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MQPool>
+	<!-- 每个模块唯一的标识-->
+	<clientId>QoSHandle</clientId>
+     <systemName>ITMS</systemName>
+	<itms>	
+		<!--enable 0:false,default; 1:yes. -->
+		<enable>1</enable>
+		<mq>
+	       	 <!--enable 0:false,default; 1:yes. -->
+			 <enable>1</enable>
+			 <type>2</type>
+			 <topic>acs.alive</topic>
+			 <activeMQ>
+			         <url>failover:(tcp://192.168.2.26:61616,tcp://192.168.2.4:61616)?randomize=false&amp;priorityBackup=true</url>
+			 </activeMQ>
+			 <kafka>
+			         <autoCommitInterval>1000</autoCommitInterval>
+			         <groupId>QoSHandle.alive</groupId>
+			         <sessionTimeout>60000</sessionTimeout>
+			         <syncTime>2000</syncTime>
+			         <zooKeeper>192.168.13.78:2181</zooKeeper>
+			 </kafka>
+		</mq>
+		<mq>
+			 <!--enable 0:false,default; 1:yes. -->
+			 <enable>1</enable>
+			 <type>2</type>
+			 <topic>dev.rpc</topic>
+			 <activeMQ>
+			         <url>failover:(tcp://192.168.2.26:61616,tcp://192.168.2.4:61616)?randomize=false&amp;priorityBackup=true</url>
+			 </activeMQ>
+			 <kafka>
+			         <autoCommitInterval>1000</autoCommitInterval>
+			         <groupId>QoSHandle.rpc</groupId>
+			         <sessionTimeout>60000</sessionTimeout>
+			         <syncTime>2000</syncTime>
+			         <zooKeeper>192.168.13.78:2181</zooKeeper>
+			 </kafka>
+		</mq>
+		<mq>
+			<!--enable 0:false,default; 1:yes. -->
+			<enable>1</enable>
+			<!--主题使用哪种消息中心发送消息 1:使用activemq 2:使用kafka -->
+			<type>2</type>
+			<topic>batchSet</topic>
+			<activeMQ>
+				<url>tcp://192.168.0.213:61616</url>
+			</activeMQ>
+			<kafka>
+				<autoCommitInterval>1000</autoCommitInterval>
+				<groupId>QoSHandle.batchSet</groupId>
+				<sessionTimeout>60000</sessionTimeout>
+				<syncTime>2000</syncTime>
+				<zooKeeper>192.168.13.78:2181</zooKeeper>
+				<brokerList>192.168.13.78:19091</brokerList>
+                <type>sync</type>
+                <serializer>kafka.serializer.StringEncoder</serializer>
+                <partitioner>kafka.producer.DefaultPartitioner</partitioner>
+                <acks>1</acks>
+                <key>kafka.serializer.StringEncoder</key>
+			</kafka>
+		</mq>
+		<mq>
+			<!--enable 0:false,default; 1:yes. -->
+			<enable>0</enable>
+			<!--主题使用哪种消息中心发送消息 1:使用activemq 2:使用kafka -->
+			<type>2</type>
+			<topic>gatherVlan</topic>
+			<activeMQ>
+				<url>tcp://192.168.0.213:61616</url>
+			</activeMQ>
+			<kafka>
+				<autoCommitInterval>1000</autoCommitInterval>
+				<groupId>QoSHandle.gatherVlan</groupId>
+				<sessionTimeout>60000</sessionTimeout>
+				<syncTime>2000</syncTime>
+				<zooKeeper>192.168.13.78:2181</zooKeeper>
+				<brokerList>192.168.13.78:19091</brokerList>
+                <type>sync</type>
+                <serializer>kafka.serializer.StringEncoder</serializer>
+                <partitioner>kafka.producer.DefaultPartitioner</partitioner>
+                <acks>1</acks>
+                <key>kafka.serializer.StringEncoder</key>
+			</kafka>
+		</mq>
+		<mq>
+			<!--enable 0:false,default; 1:yes. -->
+			<enable>0</enable>
+			<!--主题使用哪种消息中心发送消息 1:使用activemq 2:使用kafka -->
+			<type>2</type>
+			<topic>superPasswd</topic>
+			<activeMQ>
+				<url>tcp://192.168.0.213:61616</url>
+			</activeMQ>
+			<kafka>
+				<autoCommitInterval>1000</autoCommitInterval>
+				<groupId>QoSHandle.superPasswd</groupId>
+				<sessionTimeout>60000</sessionTimeout>
+				<syncTime>2000</syncTime>
+				<zooKeeper>192.168.13.78:2181</zooKeeper>
+				<brokerList>192.168.13.78:19091</brokerList>
+                <type>sync</type>
+                <serializer>kafka.serializer.StringEncoder</serializer>
+                <partitioner>kafka.producer.DefaultPartitioner</partitioner>
+                <acks>1</acks>
+                <key>kafka.serializer.StringEncoder</key>
+			</kafka>
+		</mq>
+	</itms>
+</MQPool> 

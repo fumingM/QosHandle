@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="GB18030"?>
+<config>
+	<!-- 模块别名 -->
+	<Alias>batchSet</Alias>
+	<!-- 系统名称 -->
+	<ServerName>QoS监听处理系统</ServerName>
+	<!-- 版本 -->
+	<Version>1.0</Version>
+	<!-- 程序安装属地 -->
+	<InstArea>cq_dx</InstArea>
+	
+	<!-- 是否使用批量设置配置节点功能 -->
+	<batchSetEnable>0</batchSetEnable>
+	
+	<!-- 是否使用批量采集VLAN功能 -->
+	<gatherVlanEnable>0</gatherVlanEnable>
+	
+	<!-- 是否使用修改超级密码功能 -->
+	<superPasswdEnable>0</superPasswdEnable>
+	
+	<!-- 是否使用采集OSS2功能 -->
+	<gatherOSS2Enable>1</gatherOSS2Enable>
+	
+	<!-- 消息配置项 -->
+	<messageConifg>
+		<!-- 批量配置 -->
+		<servMessageConfig>
+		
+			<!-- 监听后需转发的主题配置项 -->
+			<sendMessageList>
+		
+				<!-- 发送主题配置项，根据消息组件的不同，可配置多个同级配置项 -->
+				<sendMessage>
+					<!-- 用于读取消息组件配置信息，和MQPool.xml中topic配
+					置项对应 -->
+					<key>22</key>
+					<!-- 此消息组件发送的主题集合 -->
+					<topicList>
+						<!-- 主题名称，根据业务情况可以配置多个同级配置项 -->
+						<topic>dev.informRB22</topic>
+						<topic>dev.informserv33</topic>
+					</topicList>
+				</sendMessage>
+			</sendMessageList>
+			
+				
+			<!-- 监听主题配置项 -->
+			<listenerMessage>
+				<!-- 用于读取消息组件配置信息，和MQPool.xml中topic配置项对应 -->
+				<key>batchSet</key>
+				<!-- 监听的主题名 -->
+				<topic>dev.informbatchSet</topic>
+				<!-- 监听消息之后的处理类，后续增加监听主题只需增加配置、消息处理类即可，代码做到零耦合，灵活扩展 -->
+				<handleClass>alik.itms.QosHandle.batchSet.bio.BatchSetMessageHandle</handleClass>
+			</listenerMessage>
+		</servMessageConfig>
+			
+		<!-- 采集组播Vlan节点 -->
+		<servMessageConfig>			
+			<!-- 监听主题配置项 -->
+			<listenerMessage>
+				<!-- 用于读取消息组件配置信息，和MQPool.xml中topic配置项对应 -->
+				<key>gatherVlan</key>
+				<!-- 监听的主题名 -->
+				<topic>dev.informgatherVlan</topic>
+				<!-- 监听消息之后的处理类，后续增加监听主题只需增加配置、消息处理类即可，代码做到零耦合，灵活扩展 -->
+				<handleClass>alik.itms.QosHandle.gatherVlan.bio.GatherVlanMessageHandle</handleClass>
+			</listenerMessage>
+		</servMessageConfig>
+		
+		<!-- 采集OSS2节点 -->
+		<servMessageConfig>			
+			<!-- 监听主题配置项 -->
+			<listenerMessage>
+				<!-- 用于读取消息组件配置信息，和MQPool.xml中topic配置项对应 -->
+				<key>gatherOSS2</key>
+				<!-- 监听的主题名 -->
+				<topic>dev.informgatherOSS2</topic>
+				<!-- 监听消息之后的处理类，后续增加监听主题只需增加配置、消息处理类即可，代码做到零耦合，灵活扩展 -->
+				<handleClass>alik.itms.QosHandle.gatherOSS2.bio.GatherOSS2MessageHandle</handleClass>
+			</listenerMessage>
+		</servMessageConfig>
+		
+		<!-- 修改超级密码 -->
+		<servMessageConfig>			
+			<!-- 监听主题配置项 -->
+			<listenerMessage>
+				<!-- 用于读取消息组件配置信息，和MQPool.xml中topic配置项对应 -->
+				<key>superPasswd</key>
+				<!-- 监听的主题名 -->
+				<topic>dev.informsuperPasswd</topic>
+				<!-- 监听消息之后的处理类，后续增加监听主题只需增加配置、消息处理类即可，代码做到零耦合，灵活扩展 -->
+				<handleClass>alik.itms.QosHandle.superPasswd.bio.SuperPasswdMessageHandle</handleClass>
+			</listenerMessage>
+		</servMessageConfig>
+	</messageConifg>
+	
+	<!-- 批量设置固定节点 -->
+	<batchSet>
+		<!-- 是否为定制任务，0：全网，1：定制，默认为0 -->
+		<isMake>0</isMake>
+		<!-- 单位天，默认永久不过期 -->
+		<expiryDate>0</expiryDate>
+		<!-- 设置事件，0：不启用，1：启用，默认为0，多个以逗号隔开 -->
+		<eventEnable>1</eventEnable>
+		<eventList>1,2</eventList>
+		<!-- 失败情况重新设置 ，0：不启用，1：启用，默认为0，多个以逗号隔开-->
+		<failRestEnable>1</failRestEnable>
+		<failResetList>0,-1,-2</failResetList>
+		<!-- 线程池大小 -->
+		<poolSize>100</poolSize>
+		<!-- 操作表名 -->
+		<tableName>tab_batch_result_telnet</tableName>
+		<!-- 需要设置的节点 -->
+		<nodeList>
+			<node>
+				<name>InternetGatewayDevice.DeviceInfo.X_CT-COM_ServiceManage.TelnetEnable</name>
+				<value>0</value>
+			</node>
+		</nodeList>
+	</batchSet>
+	
+	<!-- 上报采集VLAN节点 -->
+	<gatherVlan>
+		<!-- 是否为定制任务，0：全网，1：定制，默认为0 -->
+		<isMake>0</isMake>
+		<!-- 单位天，默认永久不过期 -->
+		<expiryDate>0</expiryDate>
+		<!-- 设置事件，0：不启用，1：启用，默认为0，多个以逗号隔开 -->
+		<eventEnable>1</eventEnable>
+		<eventList>1,2</eventList>
+		<!-- 失败情况重新设置 ，0：不启用，1：启用，默认为0，多个以逗号隔开-->
+		<failRestEnable>0</failRestEnable>
+		<failResetList>-1,-2</failResetList>
+		<!-- 线程池大小 -->
+		<poolSize>50</poolSize>
+		<!-- 操作表名 -->
+		<tableName>tab_result_multicast_vlan</tableName>
+		<gatherNum>1000</gatherNum>
+	</gatherVlan>
+	
+	
+	<!-- 上报采集OSS2节点 -->
+	<gatherOSS2>
+		<!-- 是否为定制任务，0：全网，1：定制，默认为0 -->
+		<isMake>0</isMake>
+		<!-- 单位天，默认永久不过期 -->
+		<expiryDate>7</expiryDate>
+		<!-- 设置事件，0：不启用，1：启用，默认为0，多个以逗号隔开 -->
+		<eventEnable>1</eventEnable>
+		<eventList>1,2</eventList>
+		<!-- 失败情况重新设置 ，0：不启用，1：启用，默认为0，多个以逗号隔开-->
+		<failRestEnable>0</failRestEnable>
+		<failResetList>-1,-2</failResetList>
+		<!-- 线程池大小 -->
+		<poolSize>50</poolSize>
+		<!-- 操作表名 -->
+		<tableName>tab_gatherOSS2_record</tableName>
+		<gatherNum>20</gatherNum>
+	</gatherOSS2>
+	
+	<!-- 上报采集21 23端口节点 -->
+	<gatherTelnetftp>
+		<!-- 是否为定制任务，0：全网，1：定制，默认为0 -->
+		<isMake>0</isMake>
+		<!-- 单位天，默认永久不过期 -->
+		<expiryDate>0</expiryDate>
+		<!-- 设置事件，0：不启用，1：启用，默认为0，多个以逗号隔开 -->
+		<eventEnable>1</eventEnable>
+		<eventList>1,2</eventList>
+		<!-- 失败情况重新设置 ，0：不启用，1：启用，默认为0，多个以逗号隔开-->
+		<failRestEnable>0</failRestEnable>
+		<failResetList>-1,-2</failResetList>
+		<!-- 线程池大小 -->
+		<poolSize>100</poolSize>
+		<!-- 操作表名 -->
+		<tableName>tab_result_telnetftp</tableName>
+	</gatherTelnetftp>
+	
+	<!-- 修改超级密码功能 -->
+	<superPasswd>
+		<!-- 是否为定制任务，0：全网，1：定制，默认为0 -->
+		<isMake>0</isMake>
+		<!-- 单位天，默认永久不过期 -->
+		<expiryDate>7</expiryDate>
+		<!-- 设置事件，0：不启用，1：启用，默认为0，多个以逗号隔开 -->
+		<eventEnable>1</eventEnable>
+		<eventList>1,2</eventList>
+		<!-- 失败情况重新设置 ，0：不启用，1：启用，默认为0，多个以逗号隔开-->
+		<failRestEnable>1</failRestEnable>
+		<failResetList>-1,-2</failResetList>
+		<!-- 线程池大小 -->
+		<poolSize>100</poolSize>
+		<!-- 操作表名 -->
+		<tableName>tab_result_super_passwd</tableName>
+	</superPasswd>
+</config>

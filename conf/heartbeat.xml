@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="GBK"?>
+<Heartbeat>
+        <!-- enable. 0:false,default; 1:yes. -->
+		<enab>1</enab>
+		<!-- 接收心跳的地址，心跳发送到ip地址 -->
+		<ip>192.168.13.78</ip>
+		<!-- 端口 -->
+		<port>10501</port>
+		<!-- 每个心跳的周期时间，单位秒 -->
+		<cycle>5</cycle>
+		<!-- 客户端名称 -->
+		<nodeName>batchSet</nodeName>
+</Heartbeat>
