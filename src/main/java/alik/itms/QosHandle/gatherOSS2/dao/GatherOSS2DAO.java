@@ -237,7 +237,7 @@ public class GatherOSS2DAO {
 		{
 			String namepath = entry.getKey();
 			if(namepath.indexOf(".LANEthernetInterfaceConfig.") >=0){
-				if (namepath.indexOf(".Status") >= 0 || namepath.indexOf(".MACAddress") >= 0 ||namepath.indexOf(".MaxBitRate") >= 0 ||
+				if (namepath.indexOf(".Enable") >= 0 || namepath.indexOf(".Status") >= 0 || namepath.indexOf(".MACAddress") >= 0 ||namepath.indexOf(".MaxBitRate") >= 0 ||
 						namepath.indexOf(".X_CU_AdaptRate") >= 0 ||namepath.indexOf(".DuplexMode") >= 0 ||namepath.indexOf(".Stats.BytesSent") >= 0 ||
 						namepath.indexOf(".Stats.BytesReceived") >= 0 ||namepath.indexOf(".Stats.PacketsSent") >= 0 ||namepath.indexOf(".Stats.PacketsReceived") >= 0){
 					boolean exist = false;
@@ -262,23 +262,24 @@ public class GatherOSS2DAO {
 		for(String currKey : keyList){
 			loger.warn("lancurrKey="+ currKey);
 			PrepareSQL psql = new PrepareSQL("insert into tab_gatherOSS2_lan (device_id,ManufacturerOUI,SerialNumber," +
-					"Status,MACAddress,MaxBitRate,X_CU_AdaptRate,DuplexMode,BytesSent,BytesReceived,PacketsSent,PacketsReceived,LANDevicei,LANEthIntConfigi,gather_time) " +
-					"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+					"Enable,Status,MACAddress,MaxBitRate,X_CU_AdaptRate,DuplexMode,BytesSent,BytesReceived,PacketsSent,PacketsReceived,LANDevicei,LANEthIntConfigi,gather_time) " +
+					"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			psql.setString(1, deviceId);
 			psql.setString(2, oui);
 			psql.setString(3, sn);
-			psql.setString(4, StringUtil.getStringValue(paramValueMap, currKey+".Status", ""));
-			psql.setString(5, StringUtil.getStringValue(paramValueMap, currKey+".MACAddress", ""));
-			psql.setString(6, StringUtil.getStringValue(paramValueMap, currKey+".MaxBitRate", ""));
-			psql.setString(7, StringUtil.getStringValue(paramValueMap, currKey+".X_CU_AdaptRate", ""));
-			psql.setString(8, StringUtil.getStringValue(paramValueMap, currKey+".DuplexMode", ""));
-			psql.setString(9, StringUtil.getStringValue(paramValueMap, currKey+".Stats.BytesSent", ""));
-			psql.setString(10, StringUtil.getStringValue(paramValueMap, currKey+".Stats.BytesReceived", ""));
-			psql.setString(11, StringUtil.getStringValue(paramValueMap, currKey+".Stats.PacketsSent", ""));
-			psql.setString(12, StringUtil.getStringValue(paramValueMap, currKey+".Stats.PacketsReceived", ""));
-			psql.setString(13, geti(currKey, ".LANDevice."));
-			psql.setString(14, geti(currKey, ".LANEthernetInterfaceConfig."));
-			psql.setLong(15, gathertime);
+			psql.setString(4, StringUtil.getStringValue(paramValueMap, currKey+".Enable", ""));
+			psql.setString(5, StringUtil.getStringValue(paramValueMap, currKey+".Status", ""));
+			psql.setString(6, StringUtil.getStringValue(paramValueMap, currKey+".MACAddress", ""));
+			psql.setString(7, StringUtil.getStringValue(paramValueMap, currKey+".MaxBitRate", ""));
+			psql.setString(8, StringUtil.getStringValue(paramValueMap, currKey+".X_CU_AdaptRate", ""));
+			psql.setString(9, StringUtil.getStringValue(paramValueMap, currKey+".DuplexMode", ""));
+			psql.setString(10, StringUtil.getStringValue(paramValueMap, currKey+".Stats.BytesSent", ""));
+			psql.setString(11, StringUtil.getStringValue(paramValueMap, currKey+".Stats.BytesReceived", ""));
+			psql.setString(12, StringUtil.getStringValue(paramValueMap, currKey+".Stats.PacketsSent", ""));
+			psql.setString(13, StringUtil.getStringValue(paramValueMap, currKey+".Stats.PacketsReceived", ""));
+			psql.setString(14, geti(currKey, ".LANDevice."));
+			psql.setString(15, geti(currKey, ".LANEthernetInterfaceConfig."));
+			psql.setLong(16, gathertime);
 			
 			list.add(psql.getSQL());
 		}
@@ -350,7 +351,8 @@ public class GatherOSS2DAO {
 		{
 			String namepath = entry.getKey();
 			if(namepath.indexOf(".Hosts.Host.") >=0){
-				if (namepath.indexOf(".InterfaceType") >= 0 || namepath.indexOf(".HostNumberOfEntries") >= 0 ||namepath.indexOf(".X_CU_Hosttype") >= 0 ||
+				if (namepath.indexOf(".HostName") >= 0 || namepath.indexOf(".VendorClassID") >= 0 ||namepath.indexOf(".Layer2Interface") >= 0 ||namepath.indexOf(".Active") >= 0 ||
+						namepath.indexOf(".InterfaceType") >= 0 ||namepath.indexOf(".X_CU_Hosttype") >= 0 ||
 						namepath.indexOf(".IPAddress") >= 0 ||namepath.indexOf(".MACAddress") >= 0){
 					boolean exist = false;
 					for(String currKey : keyList){
@@ -373,19 +375,25 @@ public class GatherOSS2DAO {
 		for(String currKey : keyList){
 			loger.warn("lanhostcurrKey="+ currKey);
 			PrepareSQL psql = new PrepareSQL("insert into tab_gatherOSS2_lanhost (device_id,ManufacturerOUI,SerialNumber," +
-					"InterfaceType,HostNumberOfEntries,X_CU_Hosttype,IPAddress,MACAddress,LANDevicei,Hosti,gather_time) " +
-					"values (?,?,?,?,?,?,?,?,?,?,?)");
+					"InterfaceType,HostNumberOfEntries,X_CU_Hosttype,IPAddress,MACAddress,LANDevicei,Hosti,gather_time,HostName,VendorClassID,Layer2Interface,Active) " +
+					"values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			psql.setString(1, deviceId);
 			psql.setString(2, oui);
 			psql.setString(3, sn);
 			psql.setString(4, StringUtil.getStringValue(paramValueMap, currKey+".InterfaceType", ""));
-			psql.setString(5, StringUtil.getStringValue(paramValueMap, currKey+".HostNumberOfEntries", ""));
+			psql.setString(5, StringUtil.getStringValue(paramValueMap, "InternetGatewayDevice.LANDevice.1.Hosts.HostNumberOfEntries", ""));
 			psql.setString(6, StringUtil.getStringValue(paramValueMap, currKey+".X_CU_Hosttype", ""));
 			psql.setString(7, StringUtil.getStringValue(paramValueMap, currKey+".IPAddress", ""));
 			psql.setString(8, StringUtil.getStringValue(paramValueMap, currKey+".MACAddress", ""));
 			psql.setString(9, geti(currKey, ".LANDevice."));
 			psql.setString(10, geti(currKey, ".Hosts.Host."));
 			psql.setLong(11, gathertime);
+			
+			psql.setString(12, StringUtil.getStringValue(paramValueMap, currKey+".HostName", ""));
+			psql.setString(13, StringUtil.getStringValue(paramValueMap, currKey+".VendorClassID", ""));
+			psql.setString(14, StringUtil.getStringValue(paramValueMap, currKey+".Layer2Interface", ""));
+			psql.setString(15, StringUtil.getStringValue(paramValueMap, currKey+".Active", ""));
+			
 			list.add(psql.getSQL());
 		}
 		
@@ -639,8 +647,8 @@ public class GatherOSS2DAO {
 			psql.setString(1, deviceId);
 			psql.setString(2, oui);
 			psql.setString(3, sn);
-			psql.setString(4, StringUtil.getStringValue(paramValueMap, currKey+"AssociatedDeviceMACAddress", ""));
-			psql.setString(5, StringUtil.getStringValue(paramValueMap, currKey+"AssociatedDeviceIPAddress", ""));
+			psql.setString(4, StringUtil.getStringValue(paramValueMap, currKey+".AssociatedDeviceMACAddress", ""));
+			psql.setString(5, StringUtil.getStringValue(paramValueMap, currKey+".AssociatedDeviceIPAddress", ""));
 			psql.setString(6, geti(currKey, ".LANDevice."));
 			psql.setString(7, geti(currKey, ".WLANConfiguration."));
 			psql.setString(8, geti(currKey, ".AssociatedDevice."));

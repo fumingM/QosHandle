@@ -126,7 +126,7 @@ public class GatherOSS2Thread implements Runnable{
 		pathBase.put("InternetGatewayDevice.X_CU_POTSDeviceNumber", "");
 		pathBase.put("InternetGatewayDevice.LANDevice.1.X_CU_WLANEnable", "");
 		pathBase.put("InternetGatewayDevice.DeviceInfo.X_CU_IPProtocolVersion", "");
-		pathBase.put("InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_CU_Band", "");
+		//pathBase.put("InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_CU_Band", "");
 		//pathBase.put("InternetGatewayDevice.X_CU_Function.HttpSpeedTest.TestURL", "");
 		//pathBase.put("InternetGatewayDevice.X_CU_Function.RMS_SpeedTest.testURL", "");
 		//pathBase.put("InternetGatewayDevice.DeviceInfo.X_CU_OS", "");
@@ -185,7 +185,7 @@ public class GatherOSS2Thread implements Runnable{
 			{
 				String namepath = wanConnPathsList.get(i);
 				if(namepath.indexOf(".LANEthernetInterfaceConfig.") >=0){
-					if (namepath.endsWith(".Status")  || namepath.endsWith(".MACAddress")  ||namepath.endsWith(".MaxBitRate")  ||
+					if (namepath.endsWith(".Enable") || namepath.endsWith(".Status")  || namepath.endsWith(".MACAddress")  ||namepath.endsWith(".MaxBitRate")  ||
 							namepath.endsWith(".X_CU_AdaptRate")  ||namepath.endsWith(".DuplexMode")  ||namepath.endsWith(".Stats.BytesSent")  ||
 							namepath.endsWith(".Stats.BytesReceived")  ||namepath.endsWith(".Stats.PacketsSent")  ||namepath.endsWith(".Stats.PacketsReceived") ){
 						pathLan.add(namepath);
@@ -202,9 +202,14 @@ public class GatherOSS2Thread implements Runnable{
 					//loger.warn("[{}]pathAll size :{}",deviceId,pathAll.size());
 					continue;
 				}
+				else if(namepath.endsWith(".Hosts.HostNumberOfEntries")){
+					pathLan.add(namepath);
+					pathAll.put(namepath,"");
+					continue;
+				}
 				else if(namepath.indexOf(".Hosts.Host.") >=0){
-					if (namepath.endsWith(".InterfaceType")|| namepath.endsWith(".HostNumberOfEntries")||namepath.endsWith(".X_CU_Hosttype")||
-							namepath.endsWith(".IPAddress")|| namepath.endsWith(".MACAddress")){
+					if (namepath.endsWith(".HostName") || namepath.endsWith(".VendorClassID") || namepath.endsWith(".InterfaceType")||namepath.endsWith(".X_CU_Hosttype")||
+							namepath.endsWith(".IPAddress")|| namepath.endsWith(".MACAddress")|| namepath.endsWith(".Layer2Interface")|| namepath.endsWith(".Active")){
 						pathLan.add(namepath);
 						pathAll.put(namepath,"");
 						//loger.warn("[{}]LANDevice相关节点:{}",deviceId,namepath);
@@ -334,6 +339,19 @@ public class GatherOSS2Thread implements Runnable{
 			paramValueMap.put("InternetGatewayDevice.DeviceInfo.X_CU_OS", "");
 		}
 		loger.warn("[{}]X_CU_OS[{}]采集完成", deviceId, StringUtil.getStringValue(paramValueMap, "InternetGatewayDevice.DeviceInfo.X_CU_OS", ""));
+		
+		maptemp = acsCorba.getParaValueMap(deviceId,
+				new String[]{"InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_CU_Band"});
+		if (maptemp != null && !maptemp.isEmpty()){
+			pathBase.putAll(maptemp);
+			paramValueMap.putAll(maptemp);
+		}
+		else{
+			pathBase.put("InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_CU_Band", "");
+			paramValueMap.put("InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_CU_Band", "");
+		}
+		loger.warn("[{}]X_CU_Band[{}]采集完成", deviceId, StringUtil.getStringValue(paramValueMap, "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_CU_Band", ""));
+		
 		
 		//光功率采集（不确定是GPON还是EPON，所以需要单独采集）
 		WANAccessType = StringUtil.getStringValue(paramValueMap, "InternetGatewayDevice.WANDevice.1.WANCommonInterfaceConfig.WANAccessType", "GPON");
